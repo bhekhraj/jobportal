@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobFinder</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" />
+</head>
+<body class="body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="fas fa-briefcase me-2"></i>JobFinder</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/" style="color:white;text-decoration:bold;">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="color:white;text-decoration:bold;">About</a></li>
+                  
+                      <li class="nav-item">{%if role == "employer"%}
+                        <a href="/post-job" class="nav-link" style="color:white;text-decoration:bold;">Manage jobs</a>
+                        {%endif%}</li>
+                  
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout" style="color:white;text-decoration:bold;">Logout</a></li>
+                                                      
+                          
+                
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+            <h4 class="mt-5 mb-4 text-center"> welcome {{user.username}}</h4>
+            {%if role == "user"%}
+                <div class="justify content-center text-center">
+                <a href="/" class="btn btn-primary mt-2 mb-2 text-center">Apply for jobs</a>
+                </div>
+            {%else%}
+
+                </div>
+            
+            {%endif%}
+
+    <!-- Footer HTML -->
+    <footer style="background-color: #222;position:fixed;bottom:0;width:100%;">
+      <div class="footer">
+        <!-- Logo or Site Name -->
+        <div class="flex-1 text-white col-md-4 col-6">
+          <h2>Jobfinder</h2><br>
+          <p style="margin: 5px 0 0; font-size: 14px;">© 2025 jobfinder. All rights reserved.</p>
+        </div>
+
+        <!-- Links -->
+        <div class=" mt-3 flex-1 text-white col-md-4 col-6">
+          <h4 >Quick Links</h4>
+          <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px;">
+            <li><a href="/about" style="color: #ccc; text-decoration: none;">About</a></li>
+            <li><a href="/contact" style="color: #ccc; text-decoration: none;">Contact</a></li>
+            <li><a href="/privacy" style="color: #ccc; text-decoration: none;">Privacy Policy</a></li>
+            <li><a href="/terms" style="color: #ccc; text-decoration: none;">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <!-- Social Media -->
+        <div class=" mt-4 flex-1 text-white col-md-4 col-12">
+          <h4 >Follow Us</h4>
+          <div class="mt-2 fs-4">
+            <a class="social"href="https://facebook.com" style=""><i class="fab fa-facebook-f"></i></a>
+            <a class="social"href="https://twitter.com"  "><i class="fab fa-twitter"></i></a>
+            <a class="social" href="https://instagram.com" "><i class="fab fa-instagram"></i></a>
+            <a class="social" href="https://linkedin.com"  "><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+            
+     <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="{{url_for('static', filename='javascript/script.js')}}"></script>
+            
+</body>
+</html>
