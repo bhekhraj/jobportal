@@ -28,4 +28,4 @@ or
 
 4- Run application
 
-```python run.py```
+```python main.py```
