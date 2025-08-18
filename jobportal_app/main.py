@@ -1,13 +1,12 @@
-from typing import Required
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import PrimaryKeyConstraint, delete
+from sqlalchemy import PrimaryKeyConstraint
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # User model
@@ -29,7 +28,7 @@ class Job(db.Model):
     #location = db.Column(db.String(100))
     posted_by = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
+#register route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -45,9 +44,9 @@ def register():
         return "registration successfull"
     return render_template('register.html')
 
+#kogin route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    
     if request.method == 'POST':
         user = User.query.filter_by(username=request.form['username']).first()
         if user and check_password_hash(user.password, request.form['password']):
@@ -60,10 +59,10 @@ def login():
             session['role'] = user.role
         else:
             return"invalid username or password"
-            
         return redirect('/dashboard')
     return render_template('login.html')
 
+#dashboard route
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
@@ -82,12 +81,11 @@ def dashboard():
         user = User.query.filter_by(id=session['user_id']).first()
         return render_template('dashboard.html', user=user, jobs=jobs, role=role)
         
-
+#post-jobs route
 @app.route('/post-job', methods=['GET', 'POST'])
 def post_job():
     if session.get('role') not in ['admin', 'employer']:
         return "Unauthorized! please login first"
-    
     if request.method == 'POST':
         action = request.form.get('action')
         if action == 'add':
@@ -100,18 +98,16 @@ def post_job():
             if job.title and job.description and job.company:
                 db.session.add(job)
                 db.session.commit()
-        
         elif action == 'remove':
             job_id = request.form['job_id']
             job = Job.query.filter_by(id=job_id).first()
-
             if job:
                 db.session.delete(job)
                 db.session.commit()
         return redirect('/post_job')
-    
     return render_template('post_job.html')
 
+#admin-creation
 def create_admin(username,password):
     #if session.get('role') !='admin':
        # return "only admin can access this page"
@@ -121,7 +117,6 @@ def create_admin(username,password):
         if existing_admin:
             print("Admin user already exists.")
             return
-
         # Hash the password
         password = generate_password_hash(password)
 
@@ -138,7 +133,7 @@ def create_admin(username,password):
 # creating admin user
 #create_admin('admin', 'admin@123')
 
-
+#manage-user route
 @app.route('/manage-user', methods=['GET', 'POST'])
 def manage_users():
     if 'user_id' not in session:
@@ -176,7 +171,7 @@ def manage_users():
                 return redirect('/admin')
     
     return render_template('manage_users.html')
-            
+#admin route            
 @app.route('/admin')
 def admin():
     if session.get('role') == 'admin':
