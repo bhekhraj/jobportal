@@ -199,24 +199,26 @@ def apply(id):
 
 @app.route('/')
 def index():
+    user_id=session.get('user_id')
+    user = User.query.filter_by(id=user_id).first()
     jobs = Job.query.all()
     search = request.args.get('search')
     if search:
        search_res = Job.query.filter(Job.title.contains(search) | Job.description.contains(search)).all()
-       return render_template('index.html', jobs=jobs,search_res=search_res)
+       return render_template('index.html', jobs=jobs,search_res=search_res,user=user)
     filter1= request.args.get('job_title')
     filter2= request.args.get('company')
     filter3= request.args.get('location')
     if filter1:
         f_jobs = Job.query.filter_by(title=filter1).all()
-        return render_template('index.html', f_jobs=f_jobs)
+        return render_template('index.html', f_jobs=f_jobs,user=user)
     elif filter2:
         f_jobs = Job.query.filter_by(company=filter2).all()
-        return render_template('index.html', f_jobs=f_jobs)
+        return render_template('index.html', f_jobs=f_jobs,user=user)
     elif filter3:
         f_jobs = Job.query.filter_by(location=filter3).all()
-        return render_template('index.html', f_jobs=f_jobs)
-    return render_template('index.html', jobs=jobs)
+        return render_template('index.html', f_jobs=f_jobs,user=user)
+    return render_template('index.html', jobs=jobs,user=user)
     
 
 if __name__ == '__main__':
